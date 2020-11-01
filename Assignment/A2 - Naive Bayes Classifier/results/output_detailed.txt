@@ -1,0 +1,228 @@
+CS60050 Assignment 2: Naive Bayes Classifier
+--------------------------------------------------
+DATASET
+        case_id  Hospital_code  ... Admission_Deposit   Stay
+0             1              8  ...            4911.0   0-10
+1             2              2  ...            5954.0  41-50
+2             3             10  ...            4745.0  31-40
+3             4             26  ...            7272.0  41-50
+4             5             26  ...            5558.0  41-50
+...         ...            ...  ...               ...    ...
+318433   318434              6  ...            4144.0  11-20
+318434   318435             24  ...            6699.0  31-40
+318435   318436              7  ...            4235.0  11-20
+318436   318437             11  ...            3761.0  11-20
+318437   318438             19  ...            4752.0   0-10
+
+[318438 rows x 18 columns]
+
+
+--------------------------------------------------
+Question 1
+--------------------------------------------------
+Part a
+--------------------------------------------------
+
+Missing values in various columns:
+
+case_id                                 0
+Hospital_code                           0
+Hospital_type_code                      0
+City_Code_Hospital                      0
+Hospital_region_code                    0
+Available Extra Rooms in Hospital       0
+Department                              0
+Ward_Type                               0
+Ward_Facility_Code                      0
+Bed Grade                             113
+patientid                               0
+City_Code_Patient                    4532
+Type of Admission                       0
+Severity of Illness                     0
+Visitors with Patient                   0
+Age                                     0
+Admission_Deposit                       0
+Stay                                    0
+dtype: int64
+
+It has been observed that missing values exist only in columns 'Bed Grade' and 'City_Code_Patient'.
+Most common class of each column will be used to fill up the missing values.
+
+Let's see if the missing values have been filled or not
+
+case_id                              0
+Hospital_code                        0
+Hospital_type_code                   0
+City_Code_Hospital                   0
+Hospital_region_code                 0
+Available Extra Rooms in Hospital    0
+Department                           0
+Ward_Type                            0
+Ward_Facility_Code                   0
+Bed Grade                            0
+patientid                            0
+City_Code_Patient                    0
+Type of Admission                    0
+Severity of Illness                  0
+Visitors with Patient                0
+Age                                  0
+Admission_Deposit                    0
+Stay                                 0
+dtype: int64
+
+--------------------------------------------------
+Part b
+--------------------------------------------------
+
+Time to find which columns contain categorical data. For these columns, the datatype would be 'object'.
+
+case_id                                int64
+Hospital_code                          int64
+Hospital_type_code                    object
+City_Code_Hospital                     int64
+Hospital_region_code                  object
+Available Extra Rooms in Hospital      int64
+Department                            object
+Ward_Type                             object
+Ward_Facility_Code                    object
+Bed Grade                              int64
+patientid                              int64
+City_Code_Patient                      int64
+Type of Admission                     object
+Severity of Illness                   object
+Visitors with Patient                  int64
+Age                                   object
+Admission_Deposit                    float64
+Stay                                  object
+dtype: object
+
+For the columns which have datatype as 'object' will be encoded with sklearn LabelEncoder API.
+
+After encoding, our dataset will look like this.
+
+        case_id  Hospital_code  ...  Admission_Deposit  Stay
+0             1              8  ...             4911.0     0
+1             2              2  ...             5954.0     4
+2             3             10  ...             4745.0     3
+3             4             26  ...             7272.0     4
+4             5             26  ...             5558.0     4
+...         ...            ...  ...                ...   ...
+318433   318434              6  ...             4144.0     1
+318434   318435             24  ...             6699.0     3
+318435   318436              7  ...             4235.0     1
+318436   318437             11  ...             3761.0     1
+318437   318438             19  ...             4752.0     0
+
+[318438 rows x 18 columns]
+
+Before going further, one thing to note that columns 'case_id' and 'patientid' take values in a large range.
+Therfore, we are removing these columns from the dataset as they have little significance for classification.
+Also, the 'Admission_Deposit' column takes continuous values, for this we divide the amount by 1000 and
+round it off to nearest integer.
+
+After all these pre-processing, our dataset will look like this.
+
+        Hospital_code  Hospital_type_code  ...  Admission_Deposit  Stay
+0                   8                   2  ...                  5     0
+1                   2                   2  ...                  6     4
+2                  10                   4  ...                  5     3
+3                  26                   1  ...                  7     4
+4                  26                   1  ...                  6     4
+...               ...                 ...  ...                ...   ...
+318433              6                   0  ...                  4     1
+318434             24                   0  ...                  7     3
+318435              7                   0  ...                  4     1
+318436             11                   1  ...                  4     1
+318437             19                   0  ...                  5     0
+
+[318438 rows x 16 columns]
+--------------------------------------------------
+Part c
+--------------------------------------------------
+
+Accuracy of Discrete Naive Bayes after 5-fold cross validation is 33.19489695780177%
+
+Final test accuracy of Discrete Naive Bayes is 33.218188669765105%
+
+--------------------------------------------------
+Question 2
+--------------------------------------------------
+Part a
+--------------------------------------------------
+
+Number of columns in the dataset is 15
+
+Variance explained by principal components:
+
+Components		Fraction of Variance Explained
+Component_1		0.6019018520755952
+Component_2		0.17973439171281055
+Component_3		0.07639213328043225
+Component_4		0.029747220730891543
+Component_5		0.028082870559276427
+Component_6		0.024619377862918228
+Component_7		0.015429824018348234
+Component_8		0.011814799941466142
+Component_9		0.00931652035426164
+Component_10		0.00601822622735507
+Component_11		0.004694309301515252
+Component_12		0.003579201058636013
+Component_13		0.003351151835063897
+Component_14		0.002886492364424894
+Component_15		0.0024316286770045196
+
+For preserving at least 95% of variance, we have to use minimum 7 principal components.
+
+The training samples after PCA look like this:
+
+[[-4.7182701  -5.41608711  0.73990658 ...  2.80761623  1.30108546
+  -0.26216612]
+ [14.33848934 -5.55701781 -0.20380099 ...  2.91190394  2.34223107
+  -0.19774143]
+ [ 8.43547496 -5.28025504 -3.42135656 ... -1.82850639 -0.46999449
+  -1.39995617]
+ ...
+ [ 8.44848232 -6.28433046 -3.47595908 ... -0.46050503  2.47371343
+  -2.29075223]
+ [ 7.45602661  0.73708217 -2.39869448 ... -0.38162782 -0.53879093
+   0.63749305]
+ [ 3.38564812  1.65551851  0.1896258  ...  0.90225214 -0.83612753
+  -1.33962355]]
+--------------------------------------------------
+Part b
+--------------------------------------------------
+
+Accuracy of Gaussian Naive Bayes after 5-fold cross validation is 24.206869479882236%
+
+Final test accuracy of Gaussian Naive Bayes is 26.380165808315535%
+
+--------------------------------------------------
+Question 3
+--------------------------------------------------
+Part a
+--------------------------------------------------
+
+In our dataset, 'Admission_Deposit' is the only column which contained numerical data
+which we have encoded in previous step. To detect outliers, we have to decode this column
+detect outliers using values in this column, and re-encode the column.
+
+# records before removing outliers: 318438
+
+# records after removing outliers : 314269
+--------------------------------------------------
+Part b, c
+--------------------------------------------------
+
+Features present before using backward selection:
+['Hospital_code', 'Hospital_type_code', 'City_Code_Hospital', 'Hospital_region_code', 'Available Extra Rooms in Hospital', 'Department', 'Ward_Type', 'Ward_Facility_Code', 'Bed Grade', 'City_Code_Patient', 'Type of Admission', 'Severity of Illness', 'Visitors with Patient', 'Age', 'Admission_Deposit']
+
+Features selected through Backward selection:
+['Hospital_code', 'Available Extra Rooms in Hospital', 'Department', 'Ward_Type', 'Bed Grade', 'City_Code_Patient', 'Type of Admission', 'Severity of Illness', 'Visitors with Patient', 'Admission_Deposit']
+
+--------------------------------------------------
+Part d
+--------------------------------------------------
+
+Accuracy of Discrete Naive Bayes after 5-fold cross validation is 36.747210786945885%
+
+Final test accuracy of Discrete Naive Bayes is 36.79797626244949%

@@ -1,0 +1,20 @@
+Part 1c
+--------------------------------------------------
+Accuracy of Discrete Naive Bayes after 5-fold cross validation is 33.19489695780177%
+Final test accuracy of Discrete Naive Bayes is 33.218188669765105%
+
+Part 2b
+--------------------------------------------------
+Accuracy of Gaussian Naive Bayes after 5-fold cross validation is 24.206869479882236%
+Final test accuracy of Gaussian Naive Bayes is 26.380165808315535%
+
+Part 3c
+--------------------------------------------------
+Features selected through Backward selection are:
+['Hospital_code', 'Available Extra Rooms in Hospital', 'Department', 'Ward_Type', 'Bed Grade', 'City_Code_Patient', 'Type of Admission', 'Severity of Illness', 'Visitors with Patient', 'Admission_Deposit']
+--------------------------------------------------
+
+Part 3d
+--------------------------------------------------
+Accuracy of Discrete Naive Bayes after 5-fold cross validation is 36.747210786945885%
+Final test accuracy of Discrete Naive Bayes is 36.79797626244949%
